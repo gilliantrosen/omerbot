@@ -1,14 +1,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='mishnabot',
-    version="1.1.0",
-    description='Discord bot that posts a random sugye per day.',
-    long_description='Discord bot that posts a random sugye per day.',
+    name='omerbot',
+    version="0.0.0",
+    description='Discord bot that reminds you to count the omer.',
+    long_description='Discord bot that reminds you to count the omer.',
     long_description_content_type='text/markdown',
-    url='https://github.com/subalterngames/mishnabot',
-    author_email='subalterngames@gmail.com',
-    author='Esther Alter',
+    url='https://github.com/gilliantrosen/omerbot',
+    author_email='gilliantrosen@gmail.com',
+    author='G Rosen',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -21,6 +21,6 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    keywords='mishnah talmud jewish discord bot',
+    keywords='omer jewish discord bot',
     install_requires=['discord.py'],
 )

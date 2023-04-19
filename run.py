@@ -1,7 +1,7 @@
 import re
 import os
 from pathlib import Path
-from mishnabot.bot import Bot
+from omerbot.bot import Bot
 
 """
 Run the bot.

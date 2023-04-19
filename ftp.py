@@ -3,10 +3,10 @@ import re
 from pathlib import Path
 
 """
-Upload mishnabot scripts to the server via FTP.
+Upload omerbot scripts to the server via FTP.
 """
 
-ftp_files = ["run.py", "setup.py", "bot_secrets.txt", "mishnabot/data/mishnah.json", "mishnabot/bot.py"]
+ftp_files = ["run.py", "setup.py", "bot_secrets.txt", "omerbot/data/omerdata.json", "omerbot/bot.py"]
 secrets = Path("secrets.txt").read_text()
 ftp_uri = re.search(r"ftp=(.*)", secrets).group(1)
 ftp = FTP(ftp_uri)
