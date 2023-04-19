@@ -1,1 +1,14 @@
-readme!
+# ![](logo_small.png) Omerbot 
+
+Omerbot is a Discord bot to help you count the omer! For every day of the Omer, at 6:00pm UTC, it posts a message with the upcoming day of the omer and aspects for the day, followed by the blessing.  
+
+This bot is adapted from Esther Alter's [Mishnahbot](https://github.com/subalterngames/mishnahbot). 
+ 
+# Covenant
+
+This software uses the MIT license, which you can read [here](LICENSE).
+
+This software was originally made for [Shel Maala](https://www.shelmaala.com/) in order to enable the creation of the Queer Talmud. Alternative use cases, such as the study of the non-queer Talmud, are theoretically possible but not actively supported by the developers. Usage of this software to suppress the Queer Talmud is prohibited.
+
+The user of this software may not be an individual or entity, or a representative, agent, affiliate, successor, attorney, or assign of an individual or entity, identified by the Boycott, Divestment, Sanctions ("BDS") movement on its website ([https://bdsmovement.net/](https://bdsmovement.net/) and [https://bdsmovement.net/get-involved/what-to-boycott](https://bdsmovement.net/get-involved/what-to-boycott)) as a target for boycott. *[Source: The Hippocratic License](https://firstdonoharm.dev/#hippocratic-license-3-0)*
+
