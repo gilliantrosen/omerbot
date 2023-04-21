@@ -4,7 +4,7 @@ from pkg_resources import resource_filename
 from json import loads
 import random
 from datetime import datetime
-from pyluach import dates as hebcal_dates
+from pyluach import dates as heb_dates
 import discord
 
 
@@ -12,8 +12,7 @@ class Bot(discord.Client):
     """
     Post an omer-counting message once a day at 6pm UTC for the duration of the omer. 
     """
-    intents = discord.Intents.default()
-  
+      
     def __init__(self, channel: int, logging: bool = True):
         """
         :param channel: The ID of the channel.
@@ -23,12 +22,25 @@ class Bot(discord.Client):
         self.channel: int = int(channel)
 #        self.mishnah = loads(Path(resource_filename(__name__, "data/mishnah.json")).read_text())
         self.logging: bool = logging
-        super().__init__(intents=discord.Intents.default())
+        #TODO: find out how to set minimum intents that i need
+        intents = discord.Intents.default()
+        print(intents)
+        super().__init__(intents=intents)
 
     async def on_ready(self):
         # Connect to the Discord channel.
-#        channel = self.get_channel(self.channel)
-#        today = datetime.today()
+        channel = self.get_channel(self.channel)
+        print('logged in i think')
+        post = 'default post text'       
+        greg_today = datetime.today()
+        heb_today = heb_dates.HebrewDate.today()
+        heb_tonight_day = heb_today + 1       
+        # check that we're during the omer
+        print(heb_today)   
+        # check if there's other stuff happening today
+
+        # special bit for the last day 
+
         # Get a random sugye.
 #        sugye = self.mishnah[random.randint(0, len(self.mishnah) + 1)]
 #        url = f"https://www.sefaria.org/Mishnah_{sugye['Order'].replace(' ', '_')}.{sugye['Chapter']}.{sugye['Verse']}?lang=bi"
@@ -42,13 +54,14 @@ class Bot(discord.Client):
 #        text = f"**{citation}**\n{he}\n{en}\n{url}"
         # Split the text into posts of <= 2000 characters.
 #        posts = [text[index: index + 2000] for index in range(0, len(text), 2000)]
+        
         try:
-            self.log('hello!')
 #            # Post.
-#            for post in posts:
-#                await channel.send(post)
-#            # Quit.
-#            await self.close()
+            #await channel.send(post)
+            #for post in posts:
+            #    await channel.send(post)
+            # Quit.
+            await self.close()
         except Exception as e:
             self.log(str(e))
 
