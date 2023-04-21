@@ -38,8 +38,26 @@ class Bot(discord.Client):
         # check that we're during the omer
         print(heb_today)   
         # check if there's other stuff happening today
+        eng_extra = ""    
+        holiday_today = heb_dates.HebrewDate.holiday(heb_today)
+        if holiday_today: 
+            eng_extra = f"It is also {holiday_today}."
+        # get days since passover, divide by 7 to get the week, mod 7 for the day (+1 each)
 
-        # special bit for the last day 
+        # special bit for last day 
+
+        eng_intro = f"Today is{greg_date}. After sundown, count the Omer:"
+        eng_oc_string = f"Today is %(num_total)s days, which are {num_week} weeks and {num_weekday} days of the Omer:"
+        eng_aspect_string = f"{inner_aspect} within {outer_aspect}"
+
+        heb_general_blessing = f""
+        tl_general_blessing = f""
+        eng_general_blessing = f""
+        
+        heb_todays_blessing = f""
+        tl_todays_blessing = f""    
+        eng_todays_blessing = f"" 
+
 
         # Get a random sugye.
 #        sugye = self.mishnah[random.randint(0, len(self.mishnah) + 1)]
