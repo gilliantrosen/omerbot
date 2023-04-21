@@ -16,10 +16,10 @@ python3 run.py
 
 if __name__ == "__main__":
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    secrets = Path(dir_path).joinpath("bot_secrets.txt").read_text()
+    bot_secrets = Path(dir_path).joinpath("bot_secrets.txt").read_text()
     # Get the bot token.
-    token = re.search(r"token=(.*)", secrets).group(1)
+    token = re.search(r"token=(.*)", bot_secrets).group(1)
     # Get the Discord channel.
-    channel = re.search(r"channel=(.*)", secrets).group(1)
+    channel = re.search(r"channel=(.*)", bot_secrets).group(1)
     bot = Bot(channel=int(channel))
     bot.run(token)
