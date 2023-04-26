@@ -45,69 +45,31 @@ class Bot(discord.Client):
         
         #get day of the omer
         omer_day = heb_tonight_day-omer_start+1
-        print(omer_day)
-        # divide by 7 to get the week, mod 7 for the day
-        outer_idx = (omer_day-1) // 7
-        inner_idx = (omer_day-1) % 7
-        # 'index for my JSON file' and 'actual day/week count' are related but very slightly different! 
-        # gonna construct them separately to keep track. 
-        week_count = omer_day // 7
-        weekday_count = omer_day % 7
- 
-        # Get the English text. Convert HTML tags to markdown tags.
-#        en = sugye['en'].replace("<b>", "**").replace("</b>", "**").replace("<i>", "_").replace("</i>", "_")
-
-        # Split the text into posts of <= 2000 characters.
-#        posts = [text[index: index + 2000] for index in range(0, len(text), 2000)]
-    #    inner_idx = 5
-    #    outer_idx = 6
-
 
   ### STRING CONSTRUCTION ###
      
         greg_string = greg_today.strftime("%A, %B %d")
-        day_string = "days"
-        week_string = ""
-        weekday_string = ""
-        and_string = " and "
-        eng_extra = "" 
-
-        if omer_day == 1: day_string = "day"
-        if week_count == 0 or weekday_count == 0:
-            and_string = ""
-        match week_count:
-            case 0:
-                week_string = ""
-            case 1: 
-                week_string = f"{week_count} week"
-            case _: 
-                week_string = f"{week_count} weeks"
-        match weekday_count:
-            case 0:
-                weekday_string = ""
-            case 1: 
-                weekday_string = f"{weekday_count} day"
-            case _:
-                weekday_string = f"{weekday_count} days"
 
         # check if there's other stuff happening today 
+        eng_extra = ""
         holiday_tonight = heb_dates.HebrewDate.holiday(heb_tonight_day)
         if holiday_tonight: 
             eng_extra = f"It is also {holiday_today}."
 
         eng_intro = f"Today is {greg_string}. After sundown, count the Omer!" 
-        eng_oc_string = f"Today is {omer_day} {day_string}, which are {week_string}{and_string}{weekday_string} of the Omer:"
-        eng_aspect_string = self.construct_aspect_strings(inner_idx,outer_idx)
-         
-        heb_todays_blessing = f""
-        tl_todays_blessing = f""    
-        eng_todays_blessing = f"" 
- 	
-        eng_count = f"**{eng_oc_string}\n{eng_aspect_string}.**"  
-        if eng_extra: eng_count += f"\nIt's also {eng_extra}." 
-        general_blessing = f"*if you've counted every day:*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
+        
+        (heb_aspect_string,tl_aspect_string,eng_aspect_string) = self.construct_aspect_strings(omer_day)
+        (heb_number_string,tl_number_string,eng_number_string) = self.construct_number_strings(omer_day)
 
-        post = f"{eng_intro}\n\n{general_blessing}\n\n{eng_count}"
+        heb_count_full = f"{heb_number_string} {heb_aspect_string}."
+        tl_count_full = f"{tl_number_string} {tl_aspect_string}."    	
+        eng_count_full = f"**{eng_number_string}\n{eng_aspect_string}.**"  
+        if eng_extra: eng_count_full += f"\nIt's also {eng_extra}." 
+       
+        general_blessing = f"*If you've counted every day so far, do the blessing:*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
+
+        post = f"{eng_intro}\n\n{general_blessing}\n\n{heb_count_full}\n{tl_count_full}\n{eng_count_full}"
+        
         try:
             # Post.
             await channel.send(post)
@@ -118,14 +80,132 @@ class Bot(discord.Client):
         except Exception as e:
             self.log(str(e))
 
+    def construct_number_strings(self, omer_day: int):
+        """     
+        construct the count strings for the day given. 
+        param omer_count: day of the omer 
+        """
+        heb_numbers_1_11 = self.data["heb_numbers_1-11"] 
+        tl_numbers_1_11 = self.data["tl_numbers_1-11"]
+        heb_numbers_onesplace = self.data["heb_numbers_onesplace"]
+        tl_numbers_onesplace = self.data["tl_numbers_onesplace"]
+        heb_numbers_tensplace = self.data["heb_numbers_tensplace"]
+        tl_numbers_tensplace = self.data["tl_numbers_tensplace"]
+        
+        week_count = omer_day // 7
+        weekday_count = omer_day % 7
+        
+        heb_oc = ""
+        tl_oc = ""
+        eng_day = "days"
+        
+        heb_week = ""
+        tl_week = ""
+        eng_week = ""
+        
+        heb_weekday = ""
+        tl_weekday = "" 
+        eng_weekday = ""
+        
+        heb_and = " \u05d5\u05b0"
+        tl_and = " v'"
+        eng_and = " and "
 
-    def construct_aspect_strings(self,inner_idx: int,outer_idx: int):
+ ### (Today is) X days
+        if omer_day == 1: 
+            heb_oc = "\u05d9\u05d5\u05b9\u05dd\u0020\u05d0\u05b6\u05d7\u05b8\u05d3"
+            tl_oc = "yom exad"
+            eng_day = "day"
+        elif omer_day >= 2 and omer_day <= 10:
+            # 2 to 10 are 'yamim', rest are 'yom' 
+            heb_num = heb_numbers_1_11[omer_day]
+            tl_num = tl_numbers_1_11[omer_day]
+            heb_oc = f"{heb_num} \u05d9\u05b8\u05de\u05b4\u05d9\u05dd"
+            tl_oc = f"{tl_num} yamim"
+        elif omer_day == 11: #special little 11
+            heb_num = heb_numbers_1_11[omer_day]
+            tl_num = heb_numbers_1_11[omer_day]
+            heb_oc = f"{heb_num} \u05d9\u05d5\u05b9\u05dd "
+            tl_oc = f"{tl_num} yom"
+        else: 
+            #constructable! ones (and)tens
+            #10: " " 20: v' 30: u' 40: v' 
+            heb_connector = ""
+            tl_connector = ""
+            if omer_day > 11 and omer_day < 20:
+                heb_connector = " "
+                tl_connector = " "
+            elif omer_day > 30 and omer_day < 40:
+                heb_connector = " \u05d5\u05bc"   
+                tl_connector = " u'"
+            elif (omer_day > 20 and omer_day < 30) or omer_day > 40: 
+                heb_connector = " \u05d5\u05b0"
+                tl_connector = " v'"
+            tensplace = omer_day // 10
+            onesplace = omer_day % 10
+            heb_num = f"{heb_numbers_onesplace[onesplace]}{heb_connector}{heb_numbers_tensplace[tensplace]}"
+            tl_num = f"{tl_numbers_onesplace[onesplace]}{tl_connector}{tl_numbers_tensplace[tensplace]}"
+            heb_oc = f"{heb_num} \u05d9\u05d5\u05b9\u05dd"
+            tl_oc = f"{tl_num} yom"
+
+  ### Y weeks and Z days
+        if week_count == 0 or weekday_count == 0:
+            heb_and = ""
+            tl_and = ""
+            eng_and = ""
+        else:
+            if weekday_count == 2 or weekday_count == 3:  
+                heb_and = " \u05d5\u05bc"    
+                tl_and = " u'"
+            if weekday_count == 5:
+                heb_and = " \u05d5\u05b7"
+                tl_and = " va"
+        match week_count:
+            case 0:
+                eng_week = ""
+            case 1: 
+                heb_week = "\u05e9\u05c1\u05b8\u05d1\u05d5\u05bc\u05e2\u05b7\u0020\u05d0\u05b6\u05d7\u05b8\u05d3"
+                tl_week = "shavua exad"
+                eng_week = f"{week_count} week"
+            case _: 
+                shavuot = "\u05e9\u05b8\u05c1\u05d1\u05d5\u05bc\u05e2\u05d5\u05b9\u05ea"
+                heb_week = f"{heb_numbers_1_11[week_count]} {shavuot}"               
+                tl_week = f"{tl_numbers_1_11[week_count]} shavuot"
+                eng_week = f"{week_count} weeks"
+        match weekday_count:
+            case 0:
+                eng_weekday = ""
+            case 1: 
+                heb_weekday = "\u05d9\u05d5\u05b9\u05dd\u0020\u05d0\u05b6\u05d7\u05b8\u05d3"
+                tl_weekday: "yom exad"
+                eng_weekday = f"{weekday_count} day"
+            case _:
+                yamim = "\u05d9\u05b8\u05de\u05b4\u05d9\u05dd"
+                heb_weekday = f"{heb_numbers_1_11[weekday_count]} {yamim}"
+                tl_weekday = f"{tl_numbers_1_11[weekday_count]} yamim"
+                eng_weekday = f"{weekday_count} days"
+
+ ### Putting it all together ### 
+        # break up hebrew for easier editing
+        heb_1 = f"\u05d4\u05b7\u05d9\u05bc\u05d5\u05b9\u05dd {heb_oc}" 
+        heb_2 = f"\u05e9\u05b6\u05c1\u05d4\u05b5\u05dd {heb_week}{heb_and}{heb_weekday} \u05dc\u05b8\u05e2\u05b9\u05de\u05b6\u05e8"
+        heb_numbers_string = f"{heb_1}, {heb_2}:" 
+        tl_numbers_string = f"haYom {tl_oc}, she'hem {tl_week}{tl_and}{tl_weekday} laOmer:"
+        eng_numbers_string = f"Today is {omer_day} {eng_day}, which are {eng_week}{eng_and}{eng_weekday} of the Omer:"
+ 
+        return (heb_numbers_string,tl_numbers_string,eng_numbers_string)
+
+
+    def construct_aspect_strings(self,omer_day: int):
         """ 
         construct the strings for the aspects given.
     
-        param inner_idx: inner aspect index
-        param outer_idx: outer aspect index
+        param omer_day: day of the omer
         """ 
+        # divide by 7 to get the week, mod 7 for the day
+        outer_idx = (omer_day-1) // 7
+        inner_idx = (omer_day-1) % 7
+       
         heb_aspects = self.data["heb_aspects"]
         tl_aspects = self.data["tl_aspects"]
         eng_aspects = self.data["eng_aspects"] 
@@ -159,7 +239,7 @@ class Bot(discord.Client):
         heb_aspect_string = f"{heb_aspect_strs[0]} {heb_join}{heb_aspect_strs[1]}" 
         tl_aspect_string = f"{tl_aspect_strs[0]} {tl_join}{tl_aspect_strs[1]}"
         eng_aspect_string = f"{eng_aspect_strs[0]} within {eng_aspect_strs[1]}" 
-        return eng_aspect_string
+        return (heb_aspect_string, tl_aspect_string,eng_aspect_string)
 
     def test(self) -> bool:
         """
