@@ -6,7 +6,7 @@ import random
 from datetime import datetime
 from pyluach import dates as heb_dates
 import discord
-
+from time import sleep
 
 class Bot(discord.Client):
     """
@@ -24,13 +24,11 @@ class Bot(discord.Client):
         self.logging: bool = logging
         #TODO: find out how to set minimum intents that i need
         intents = discord.Intents.default()
-        print(intents)
         super().__init__(intents=intents)
 
     async def on_ready(self):
         # Connect to the Discord channel.
         channel = self.get_channel(self.channel)
-        print('logged in i think')
     
         # load data       
         eng_aspects = self.data["eng_aspects"] 
@@ -43,7 +41,7 @@ class Bot(discord.Client):
         heb_tonight_day = heb_today + 1        
         omer_start = heb_dates.HebrewDate(heb_today.year,1,16)
         
-        #get day of the omer
+        # get day of the omer
         omer_day = heb_tonight_day-omer_start+1
 
   ### STRING CONSTRUCTION ###
@@ -51,28 +49,26 @@ class Bot(discord.Client):
         greg_string = greg_today.strftime("%A, %B %d")
 
         # check if there's other stuff happening today 
-        eng_extra = ""
-        holiday_tonight = heb_dates.HebrewDate.holiday(heb_tonight_day)
-        if holiday_tonight: 
-            eng_extra = f"It is also {holiday_today}."
+        eng_extra = self.get_holiday_tonight(heb_tonight_day)
 
         eng_intro = f"Today is {greg_string}. After sundown, count the Omer!" 
         
         (heb_aspect_string,tl_aspect_string,eng_aspect_string) = self.construct_aspect_strings(omer_day)
         (heb_number_string,tl_number_string,eng_number_string) = self.construct_number_strings(omer_day)
 
-        heb_count_full = f"{heb_number_string} {heb_aspect_string}."
+        heb_count_full = f"{heb_number_string} {heb_aspect_string}"
         tl_count_full = f"{tl_number_string} {tl_aspect_string}."    	
         eng_count_full = f"**{eng_number_string}\n{eng_aspect_string}.**"  
         if eng_extra: eng_count_full += f"\nIt's also {eng_extra}." 
        
-        general_blessing = f"*If you've counted every day so far, do the blessing:*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
-
-        post = f"{eng_intro}\n\n{general_blessing}\n\n{heb_count_full}\n{tl_count_full}\n{eng_count_full}"
+        general_blessing = f"*If you've counted every day so far, do the blessing first. Otherwise, go right to the counting.*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
         
+        post = f"{eng_intro}\n\n{general_blessing}\n\n{heb_count_full}\n{tl_count_full}\n{eng_count_full}"
+ 
+        self.test()       
         try:
             # Post.
-            await channel.send(post)
+#            await channel.send(post)
             #for post in posts:
             #    await channel.send(post)
             # Quit.
@@ -241,13 +237,62 @@ class Bot(discord.Client):
         eng_aspect_string = f"{eng_aspect_strs[0]} within {eng_aspect_strs[1]}" 
         return (heb_aspect_string, tl_aspect_string,eng_aspect_string)
 
+    def get_holiday_tonight(self, heb_tonight_day: heb_dates.HebrewDate) -> str: 
+        eng_extra = ""
+        holiday_tonight = heb_dates.HebrewDate.holiday(heb_tonight_day)
+        if holiday_tonight: 
+            eng_extra = f"It is also {holiday_tonight} tonighti."
+        return eng_extra
+ 
+
+
+### Test functions ###
+
     def test(self) -> bool:
         """
         test function
         """ 
-        test_pass = true
-        return test_pass
-     
+        test_pass = True
+        self.test_holidays()
+        return test_pass 
+
+    def test_numbers(self) -> bool: 
+        """ 
+        test construct_number_strings() function. 
+        """
+        return True
+
+    def test_aspects(self) -> bool: 
+        """ 
+        test construct_aspect_strings() function. 
+        """
+        return True
+
+    def test_holidays(self) -> bool:
+        """ 
+        test get_holiday_tonight() function.
+        """
+        heb_today = heb_dates.HebrewDate.today()  
+        omer_start = heb_dates.HebrewDate(heb_today.year,1,16)
+        test_holidays = {
+            "normal_day" : omer_start,
+            "yom hashoah" : omer_start + 11,
+            "lag_baomer": omer_start + 32,
+            "rosh_xodesh_sivan" : omer_start + 45
+        } 
+#        for x,y in test_holidays.items():
+#            print(x)
+#            print(self.get_holiday_tonight(y))
+
+        for x in range(49):
+            print(x+1)
+            print(omer_start+x+1)
+            print(self.get_holiday_tonight(omer_start+x+1))
+        return True
+
+
+### Logging functions ### 
+ 
     def log(self, message: str) -> None:
         """
         Log a message.
