@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='omerbot',
-    version="0.0.0",
+    version="0.1.0",
     description='Discord bot that reminds you to count the omer.',
     long_description='Discord bot that reminds you to count the omer.',
     long_description_content_type='text/markdown',
@@ -11,7 +11,7 @@ setup(
     author='G Rosen',
     license='MIT',
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Software Development',
         'License :: OSI Approved :: BSD License',
@@ -22,5 +22,5 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     keywords='omer jewish discord bot',
-    install_requires=['discord.py'],
+    install_requires=['discord.py','pyluach'],
 )

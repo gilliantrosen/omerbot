@@ -8,6 +8,10 @@ from pyluach import dates as heb_dates
 import discord
 from time import sleep
 
+### File Navigation ### 
+    #83: string constructor functions
+    #271: test functions 
+ 
 class Bot(discord.Client):
     """
     Post an omer-counting message once a day at 6pm UTC for the duration of the omer. 
@@ -205,6 +209,8 @@ class Bot(discord.Client):
             eng_numbers_string = f"Today is {omer_day} {eng_day}, which are {eng_week}{eng_and}{eng_weekday} of the Omer:"
  
         return (heb_numbers_string,tl_numbers_string,eng_numbers_string)
+
+
 
 
     def construct_aspect_strings(self,omer_day: int):
