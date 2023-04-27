@@ -26,7 +26,6 @@ class Bot(discord.Client):
         self.channel: int = int(channel)
         self.data = loads(Path(resource_filename(__name__, "data/omerdata.json")).read_text())
         self.logging: bool = logging
-        #TODO: find out how to set minimum intents that i need
         intents = discord.Intents.default()
         super().__init__(intents=intents)
 
@@ -48,7 +47,7 @@ class Bot(discord.Client):
         # get day of the omer
         omer_day = heb_tonight_day-omer_start+1
 
-  ### STRING CONSTRUCTION ###
+    ### STRING CONSTRUCTION ###
      
         greg_string = greg_today.strftime("%A, %B %d")
 
@@ -79,6 +78,7 @@ class Bot(discord.Client):
         except Exception as e:
             self.log(str(e))
 
+ 
 
 ### Construction Functions ### 
 
@@ -113,7 +113,7 @@ class Bot(discord.Client):
         tl_and = " v'"
         eng_and = " and "
 
- ### (Today is) X days
+     ### (Today is) X days
         if omer_day == 1: 
             heb_oc = "\u05d9\u05d5\u05b9\u05dd\u0020\u05d0\u05b6\u05d7\u05b8\u05d3"
             tl_oc = "yom exad"
@@ -150,7 +150,7 @@ class Bot(discord.Client):
             heb_oc = f"{heb_num} \u05d9\u05d5\u05b9\u05dd"
             tl_oc = f"{tl_num} yom"
 
-  ### Y weeks and Z days
+     ### Y weeks and Z days
         if week_count == 0 or weekday_count == 0:
             heb_and = ""
             tl_and = ""
@@ -187,7 +187,7 @@ class Bot(discord.Client):
                 tl_weekday = f"{tl_numbers_1_11[weekday_count]} yamim"
                 eng_weekday = f"{weekday_count} days"
 
- ### Putting it all together ### 
+     ### Putting it all together ### 
         # break up hebrew for easier editing
         heb_haYom = "\u05d4\u05b7\u05d9\u05bc\u05d5\u05b9\u05dd"
         heb_laOmer = "\u05dc\u05b8\u05e2\u05b9\u05de\u05b6\u05e8"
