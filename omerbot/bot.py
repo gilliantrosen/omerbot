@@ -65,16 +65,18 @@ class Bot(discord.Client):
         
         post = f"{eng_intro}\n\n{general_blessing}\n\n{heb_count_full}\n{tl_count_full}\n{eng_count_full}"
  
-        self.test()       
+        #self.test()       
+        #post = self.test_numbers()
         try:
             # Post.
-#            await channel.send(post)
-            #for post in posts:
-            #    await channel.send(post)
+            await channel.send(post)
             # Quit.
             await self.close()
         except Exception as e:
             self.log(str(e))
+
+
+### Construction Functions ### 
 
     def construct_number_strings(self, omer_day: int):
         """     
@@ -120,7 +122,7 @@ class Bot(discord.Client):
             tl_oc = f"{tl_num} yamim"
         elif omer_day == 11: #special little 11
             heb_num = heb_numbers_1_11[omer_day]
-            tl_num = heb_numbers_1_11[omer_day]
+            tl_num = tl_numbers_1_11[omer_day]
             heb_oc = f"{heb_num} \u05d9\u05d5\u05b9\u05dd "
             tl_oc = f"{tl_num} yom"
         else: 
@@ -173,7 +175,7 @@ class Bot(discord.Client):
                 eng_weekday = ""
             case 1: 
                 heb_weekday = "\u05d9\u05d5\u05b9\u05dd\u0020\u05d0\u05b6\u05d7\u05b8\u05d3"
-                tl_weekday: "yom exad"
+                tl_weekday = "yom exad"
                 eng_weekday = f"{weekday_count} day"
             case _:
                 yamim = "\u05d9\u05b8\u05de\u05b4\u05d9\u05dd"
@@ -183,11 +185,24 @@ class Bot(discord.Client):
 
  ### Putting it all together ### 
         # break up hebrew for easier editing
-        heb_1 = f"\u05d4\u05b7\u05d9\u05bc\u05d5\u05b9\u05dd {heb_oc}" 
-        heb_2 = f"\u05e9\u05b6\u05c1\u05d4\u05b5\u05dd {heb_week}{heb_and}{heb_weekday} \u05dc\u05b8\u05e2\u05b9\u05de\u05b6\u05e8"
-        heb_numbers_string = f"{heb_1}, {heb_2}:" 
-        tl_numbers_string = f"haYom {tl_oc}, she'hem {tl_week}{tl_and}{tl_weekday} laOmer:"
-        eng_numbers_string = f"Today is {omer_day} {eng_day}, which are {eng_week}{eng_and}{eng_weekday} of the Omer:"
+        heb_haYom = "\u05d4\u05b7\u05d9\u05bc\u05d5\u05b9\u05dd"
+        heb_laOmer = "\u05dc\u05b8\u05e2\u05b9\u05de\u05b6\u05e8"
+        heb_1 = f"{heb_haYom} {heb_oc}" 
+        heb_2 = f"\u05e9\u05b6\u05c1\u05d4\u05b5\u05dd {heb_week}{heb_and}{heb_weekday} {heb_laOmer}"
+        
+        heb_numbers_string = ""
+        tl_numbers_string = ""
+        eng_numbers_string = ""
+        
+        # if less than a week, just do the first part: 
+        if omer_day < 7:
+            heb_numbers_string = f"{heb_1} {heb_laOmer}:" 
+            tl_numbers_string = f"haYom {tl_oc} laOmer:"
+            eng_numbers_string = f"Today is {omer_day} {eng_day} of the Omer:"
+        else: 
+            heb_numbers_string = f"{heb_1}, {heb_2}:" 
+            tl_numbers_string = f"haYom {tl_oc}, she'hem {tl_week}{tl_and}{tl_weekday} laOmer:"
+            eng_numbers_string = f"Today is {omer_day} {eng_day}, which are {eng_week}{eng_and}{eng_weekday} of the Omer:"
  
         return (heb_numbers_string,tl_numbers_string,eng_numbers_string)
 
@@ -225,7 +240,6 @@ class Bot(discord.Client):
                 heart_string = f":{heart_string}_heart:"
             eng_aspect_strs[x] = f"{heart_string} {tl_aspects[curr_idx]} ({eng_aspects[curr_idx]}) {heart_string}"
                        
-    
         heb_join = "\u05e9\u05c1\u05b6\u05d1\u05bc\u05b0"
         tl_join = "sheb'"
         if outer_idx == 1: # gevurah uses a different connector word
@@ -237,11 +251,13 @@ class Bot(discord.Client):
         eng_aspect_string = f"{eng_aspect_strs[0]} within {eng_aspect_strs[1]}" 
         return (heb_aspect_string, tl_aspect_string,eng_aspect_string)
 
+
+
     def get_holiday_tonight(self, heb_tonight_day: heb_dates.HebrewDate) -> str: 
         eng_extra = ""
         holiday_tonight = heb_dates.HebrewDate.holiday(heb_tonight_day)
         if holiday_tonight: 
-            eng_extra = f"It is also {holiday_tonight} tonighti."
+            eng_extra = f"It is also {holiday_tonight} tonight."
         return eng_extra
  
 
@@ -253,22 +269,35 @@ class Bot(discord.Client):
         test function
         """ 
         test_pass = True
-        self.test_holidays()
+       # print("test holidays")
+       # self.test_holidays() # holidays all good!
+        print("test aspects")
+        self.test_aspects()
+        print("test numbers")
+        self.test_numbers()
         return test_pass 
 
-    def test_numbers(self) -> bool: 
+    # individual-function testers return a str so that i can post it to discord if i want
+    def test_numbers(self) -> str: 
         """ 
         test construct_number_strings() function. 
         """
-        return True
+        for x in range(1,50): #(1,50): 1-49 inclusive
+            (h,t,e) = self.construct_number_strings(x)
+            print(f"{h}\n{t}\n{e}\n")
+           # post =f"{h}\n{t}\n{e}\n"
+        return ""
 
-    def test_aspects(self) -> bool: 
+    def test_aspects(self) -> str: 
         """ 
         test construct_aspect_strings() function. 
         """
-        return True
+        for x in range(1,50): # 1-49 inclusive
+            (h,t,e) = self.construct_aspect_strings(x)
+            print(f"{h}\n{t}\n{e}\n")
+        return ""
 
-    def test_holidays(self) -> bool:
+    def test_holidays(self) -> str:
         """ 
         test get_holiday_tonight() function.
         """
@@ -280,15 +309,11 @@ class Bot(discord.Client):
             "lag_baomer": omer_start + 32,
             "rosh_xodesh_sivan" : omer_start + 45
         } 
-#        for x,y in test_holidays.items():
-#            print(x)
-#            print(self.get_holiday_tonight(y))
-
-        for x in range(49):
-            print(x+1)
-            print(omer_start+x+1)
-            print(self.get_holiday_tonight(omer_start+x+1))
-        return True
+        for x in range(1,50): #1-49 inclusive
+            print(x)
+            print(omer_start+x)
+            print(self.get_holiday_tonight(omer_start+x))
+        return ""
 
 
 ### Logging functions ### 
