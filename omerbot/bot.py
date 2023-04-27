@@ -9,8 +9,8 @@ import discord
 from time import sleep
 
 ### File Navigation ### 
-    #83: string constructor functions
-    #271: test functions 
+    #90: string constructor functions
+    #278: test functions 
  
 class Bot(discord.Client):
     """
@@ -46,9 +46,16 @@ class Bot(discord.Client):
         
         # get day of the omer
         omer_day = heb_tonight_day-omer_start+1
+        
+        if omer_day < 1 or omer_day > 49: 
+            #it's not the omer! close. 
+            try: 
+                await self.close()
+            except Exception as e: 
+                self.log(str(e))
 
     ### STRING CONSTRUCTION ###
-     
+             
         greg_string = greg_today.strftime("%A, %B %d")
 
         # check if there's other stuff happening today 
