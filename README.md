@@ -1,6 +1,6 @@
 # ![](omerbot-logo-extra-small.png) Omerbot 
 
-Omerbot is a Discord bot to help you count the omer! For every day of the Omer, at 6:00pm UTC, it posts a message with the upcoming day of the Omer, aspects for the day, and the blessing.  
+Omerbot is a Discord bot to help you count the Omer! For every day of the Omer, at 6:00pm UTC, it posts a message with the upcoming day of the Omer, aspects for the day, and the blessing. 
 
 This bot is adapted from Esther Alter's [Mishnahbot](https://github.com/subalterngames/mishnahbot). 
  
@@ -15,3 +15,4 @@ The user of this software may not be an individual or entity, or a representativ
 # Setup 
 
 Coming soon! 
+
