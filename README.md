@@ -18,7 +18,7 @@ Coming soon!
 
 # Acknowledgements
 
-Thanks to [Esther Alter](https://github.com/subalterngames) for creating Mishnahbot in the first place, and for her kindness and guidance with Python, Discord bots, and more. 
+Thanks to [Esther Alter](https://github.com/subalterngames) for creating Mishnahbot in the first place, and for her kindness and wisdom on Python, Discord bots, and more. 
 
 Thanks to Meli for their [Omer-counting newsletter](https://buttondown.email/OmerCounter), which the format, text, and scheduling of this bot is based upon. 
 
