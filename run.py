@@ -13,7 +13,6 @@ python3 run.py
 ```
 """
 
-
 if __name__ == "__main__":
     dir_path = os.path.dirname(os.path.realpath(__file__))
     bot_secrets = Path(dir_path).joinpath("bot_secrets.txt").read_text()
