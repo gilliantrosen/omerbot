@@ -6,7 +6,7 @@ import random
 from datetime import datetime
 from pyluach import dates as heb_dates
 import discord
-from time import sleep
+
 
 ### File Navigation ### 
     #90: string constructor functions
