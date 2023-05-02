@@ -22,7 +22,7 @@ For setup with a traditional remote server, see [Mishnahbot's setup instructions
 
 For setup on a little single-board computer, read on! 
 
-~~Coming soon~~
+*Coming soon....!!!*
 
 # Acknowledgements
 
