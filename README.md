@@ -18,7 +18,11 @@ The user of this software may not be an individual or entity, or a representativ
 
 # Setup 
 
-Coming soon! 
+For setup with a traditional remote server, see [Mishnahbot's setup instructions](https://github.com/subalterngames/mishnahbot#setup). 
+
+For setup on a little single-board computer, read on! 
+
+~~Coming soon~~
 
 # Acknowledgements
 
@@ -26,4 +30,4 @@ Thanks to [Esther Alter](https://github.com/subalterngames) for creating Mishnah
 
 Thanks to Meli for their [Omer-counting newsletter](https://buttondown.email/OmerCounter), which the format, text, and scheduling of this bot is based upon. 
 
-Thanks to Tim for the borrowed cursed bootleg raspi 3, where this bot runs from Pesax to Shavuot.  
+Thanks to Tim for the borrowed cursed Odroid-C2 , where this bot runs from Pesax to Shavuot.  
