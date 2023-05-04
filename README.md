@@ -24,7 +24,7 @@ The user of this software may not be an individual or entity, or a representativ
 
 ## How to add this bot to a server you don't own 
   1. Get the Channel ID of the channel where you want it to post. Put it in the "channel=" part of your `bot_secrets.txt`.
-  1. Tell someone who is an admin in that server to go to this link: [authorization link for your bot](: https://discord.com/oauth2/authorize?&client_id=1097236576062419085&scope=bot&permissions=8), then select the relevant server from the dropdown menu. 
+  1. Tell someone who is an admin in that server to go to this link: [authorization link for your bot]( https://discord.com/oauth2/authorize?&client_id=1097236576062419085&scope=bot&permissions=8), then select the relevant server from the dropdown menu. 
 
 1. Server   
 For setup with a traditional remote server, see [Mishnahbot's setup instructions](https://github.com/subalterngames/mishnahbot#setup). 
