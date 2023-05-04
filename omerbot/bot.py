@@ -69,7 +69,7 @@ class Bot(discord.Client):
         heb_count_full = f"{heb_number_string} {heb_aspect_string}"
         tl_count_full = f"{tl_number_string} {tl_aspect_string}."    	
         eng_count_full = f"**{eng_number_string}\n{eng_aspect_string}.**"  
-        if eng_extra: eng_count_full += f"\nIt's also {eng_extra}." 
+        if eng_extra: eng_count_full += f"\n{eng_extra}" 
        
         general_blessing = f"*If you've counted every day so far, do the blessing first. Otherwise, go right to the counting.*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
         
