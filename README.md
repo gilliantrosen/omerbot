@@ -68,6 +68,7 @@ mkdir ~/omerbot/omerbot/data
 vsftpd
 ```
 this sets up the directories you need and starts the FTP server. 
+
 4. on the WC again: 
 ```
 cd ~/omerbot (or wherever you’re keeping your files)
@@ -78,6 +79,7 @@ put setup.py run.py bot_secrets.txt omerbot/bot.py omerbot/data/omerdata.json
 quit 
 ```
 this uses FTP to copy the necessary files to the LC.
+
 5. on the LC again: 
 `su -` to become root, then test that the bot is working. 
 ```
