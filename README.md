@@ -57,10 +57,10 @@ For setup with a little single-board computer, read on!
 
 ### Steps: 
 1. Plug the LC into the wifi router with the Ethernet cord, and into the wall with its power cord. 
-1. On the WC: 
+2. On the WC: 
 - Use the IP scanner application to find the IP address of the LC. 
 - Use PuTTY to SSH to the LC.  
-1. on the LC: 
+3. on the LC: 
 ```
 mkdir ~/omerbot
 mkdir ~/omerbot/omerbot
@@ -68,7 +68,7 @@ mkdir ~/omerbot/omerbot/data
 vsftpd
 ```
 this sets up the directories you need and starts the FTP server. 
-1. on the WC again: 
+4. on the WC again: 
 ```
 cd ~/omerbot (or wherever you’re keeping your files)
 ftp 
@@ -78,13 +78,13 @@ put setup.py run.py bot_secrets.txt omerbot/bot.py omerbot/data/omerdata.json
 quit 
 ```
 this uses FTP to copy the necessary files to the LC.
-1. on the LC again: 
+5. on the LC again: 
 `su -` to become root, then test that the bot is working. 
 ```
 cd omerbot/ 
 python3 run.py 
 ```
-1. set up the cron job for it. 
+6. set up the cron job for it. 
 NOTE: my LC runs arch linux so it [wasn’t a cron job exactly.]( 
 https://unix.stackexchange.com/questions/261864/arch-linux-how-to-run-a-cron-job) Here are the .service file contents for setting up on arch linux: 
  ```
@@ -95,6 +95,7 @@ https://unix.stackexchange.com/questions/261864/arch-linux-how-to-run-a-cron-job
  Type=simple
  ExecStart=/usr/bin/python3 /path/to/omerbot/run.py
 ```
+
 After this, the bot should be ready to go! 
 
 
