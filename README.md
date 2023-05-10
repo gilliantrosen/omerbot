@@ -15,15 +15,20 @@ This software was originally made for [Shel Maala](https://www.shelmaala.com/) i
 
 The user of this software may not be an individual or entity, or a representative, agent, affiliate, successor, attorney, or assign of an individual or entity, identified by the Boycott, Divestment, Sanctions ("BDS") movement on its website ([https://bdsmovement.net/](https://bdsmovement.net/) and [https://bdsmovement.net/get-involved/what-to-boycott](https://bdsmovement.net/get-involved/what-to-boycott)) as a target for boycott. *[Source: The Hippocratic License](https://firstdonoharm.dev/#hippocratic-license-3-0)*
 
+# Requirements 
+- On your working computer: git and Python 3.6 or newer. 
+- Someplace where you can host the bot and run its cron job- a single-board computer like a Rasberry Pi or Odroid, a remote server, or some other always-on computer.
+- On your hosting computer, Python 3.6 or newer.
+
 # Setup 
-## 1. Discord setup 1
-  1. [In the Discord developer portal, create a Discord bot application.](https://www.wikihow.com/Create-a-Bot-in-Discord#Creating-the-Bot-on-Discord) Make sure to copy the bot token, you'll need it for file setup later! 
+## 1. Discord setup
+  1. [In the Discord developer portal, create a Discord bot application.](https://www.wikihow.com/Create-a-Bot-in-Discord#Creating-the-Bot-on-Discord) Make sure to copy the bot token in step 5, you'll need it for file setup later! 
   1. [Get the OAuth2 client ID of the bot.](https://www.wikihow.com/Create-a-Bot-in-Discord#Sending-the-Bot-to-the-Discord-Server.2FChannel)
   1. [Get the Channel ID for the channel you want the bot to post to.](https://docs.statbot.net/docs/faq/general/how-find-id/) You'll need this for your file setup later!
   1. [Add the (currently empty) bot to the channel.](https://discord.com/oauth2/authorize?&client_id=1097236576062419085&scope=bot&permissions=8) Replace the client ID in this link with your bot's client ID. 
 
-### How to add this bot to a server you don't own 
-  1. Get the Channel ID of the channel where you want it to post. Put it in the "channel=" part of your `bot_secrets.txt` (see step 2.2).
+### Variation: How to add this bot to a server where you don't have admin privileges
+  1. Get the Channel ID of the channel where you want it to post. Put it in the `"channel="` part of your `bot_secrets.txt` (see step 2.2 below).
   1. Tell someone who is an admin in that server to go to this link: [authorization link for your bot]( https://discord.com/oauth2/authorize?&client_id=1097236576062419085&scope=bot&permissions=8), then select the relevant server from the dropdown menu. 
 
 ## 2. Local computer config files 
@@ -34,10 +39,52 @@ The user of this software may not be an individual or entity, or a representativ
   channel=CHANNEL_ID
   ``` 
 
-## 3. Server   
+## 3. Hosting computer  
 For setup with a traditional remote server, see [Mishnahbot's setup instructions](https://github.com/subalterngames/mishnahbot#setup). 
 
 For setup with a little single-board computer as your server, read on! 
+
+### Hardware you will need: 
+- Little Computer (LC) of some kind (Raspi, Odroid, etc.- i used an Odroid-C2) 
+- Ethernet cable 
+- Power cord for the little computer (usb or wall) 
+- Working Computer (WC) that you used to program the bot (i.e. your laptop)
+- Wifi router (the one that your Working Computer is currently using)
+
+### Software you will need on your Working Computer: 
+- IP address getter such as [Advanced IP Scanner](https://www.advanced-ip-scanner.com/) 
+- SSH client such as [PuTTY](https://putty.org/)
+
+### Steps: 
+1. Plug the LC into the wifi router, and into the wall. 
+1. use IP scanner to find the IP address of the LC. 
+1. use putty to SSH to the LC.  
+1. on the LC: 
+```
+mkdir ~/omerbot
+mkdir ~/omerbot/omerbot
+mkdir ~/omerbot/omerbot/data
+vsftpd
+```
+1. on the WC: 
+```
+cd ~/omerbot (or wherever you’re keeping your files)
+ftp 
+open <ip address of LC>
+cd ~/omerbot
+put setup.py run.py bot_secrets.txt omerbot/bot.py omerbot/data/omerdata.json
+quit 
+```
+1. on the LC again: 
+`su -` to become root, then test that the bot is working! 
+```
+cd omerbot/ 
+python3 run.py 
+```
+1. set up the cron job for it! 
+NOTE: my LC runs arch linux so it [wasn’t a cron job exactly.]( 
+https://unix.stackexchange.com/questions/261864/arch-linux-how-to-run-a-cron-job) 
+`ExecStart=/usr/bin/python3 /path/to/omerbot/run.py`
 
 */ / / Construction Zone / / /*
 
