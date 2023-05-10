@@ -31,7 +31,7 @@ The user of this software may not be an individual or entity, or a representativ
   1. Get the Channel ID of the channel where you want it to post. Put it in the `"channel="` part of your `bot_secrets.txt` (see step 2.2 below).
   1. Tell someone who is an admin in that server to go to this link: [authorization link for your bot]( https://discord.com/oauth2/authorize?&client_id=1097236576062419085&scope=bot&permissions=8), then select the relevant server from the dropdown menu. 
 
-## 2. Local computer config files 
+## 2. Local computer 
   1. Clone this repo! the rest of this setup assumes that you've cloned it to `~/omerbot`.
   2. Create a file named `bot_secrets.txt` in the `~/omerbot` directory, formatted like this:
   ```
@@ -39,10 +39,10 @@ The user of this software may not be an individual or entity, or a representativ
   channel=CHANNEL_ID
   ``` 
 
-## 3. Hosting computer  
+## 3. Server/Hosting computer  
 For setup with a traditional remote server, see [Mishnahbot's setup instructions](https://github.com/subalterngames/mishnahbot#setup). 
 
-For setup with a little single-board computer as your server, read on! 
+For setup with a little single-board computer, read on! 
 
 ### Hardware you will need: 
 - Little Computer (LC) of some kind (Raspi, Odroid, etc.- i used an Odroid-C2) 
@@ -56,9 +56,10 @@ For setup with a little single-board computer as your server, read on!
 - SSH client such as [PuTTY](https://putty.org/)
 
 ### Steps: 
-1. Plug the LC into the wifi router, and into the wall. 
-1. use IP scanner to find the IP address of the LC. 
-1. use putty to SSH to the LC.  
+1. Plug the LC into the wifi router with the Ethernet cord, and into the wall with its power cord. 
+1. On the WC: 
+- Use the IP scanner application to find the IP address of the LC. 
+- Use PuTTY to SSH to the LC.  
 1. on the LC: 
 ```
 mkdir ~/omerbot
@@ -66,7 +67,8 @@ mkdir ~/omerbot/omerbot
 mkdir ~/omerbot/omerbot/data
 vsftpd
 ```
-1. on the WC: 
+this sets up the directories you need and starts the FTP server. 
+1. on the WC again: 
 ```
 cd ~/omerbot (or wherever you’re keeping your files)
 ftp 
@@ -75,19 +77,26 @@ cd ~/omerbot
 put setup.py run.py bot_secrets.txt omerbot/bot.py omerbot/data/omerdata.json
 quit 
 ```
+this uses FTP to copy the necessary files to the LC.
 1. on the LC again: 
-`su -` to become root, then test that the bot is working! 
+`su -` to become root, then test that the bot is working. 
 ```
 cd omerbot/ 
 python3 run.py 
 ```
-1. set up the cron job for it! 
+1. set up the cron job for it. 
 NOTE: my LC runs arch linux so it [wasn’t a cron job exactly.]( 
 https://unix.stackexchange.com/questions/261864/arch-linux-how-to-run-a-cron-job) 
-`ExecStart=/usr/bin/python3 /path/to/omerbot/run.py`
+.service file contents for setting up a timer on arch linux: 
+ ```
+ [Unit]
+ Description=Post Omer reminder
 
-*/ / / Construction Zone / / /*
-
+ [Service]
+ Type=simple
+ ExecStart=/usr/bin/python3 /path/to/omerbot/run.py
+```
+After this, the bot should be ready to go! 
 
 
 # Acknowledgements
