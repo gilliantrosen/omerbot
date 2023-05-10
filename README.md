@@ -88,7 +88,8 @@ python3 run.py
 ```
 6. set up the cron job for it. 
 NOTE: my LC runs arch linux so it [wasn’t a cron job exactly.]( 
-https://unix.stackexchange.com/questions/261864/arch-linux-how-to-run-a-cron-job) Here are the .service file contents for setting up on arch linux: 
+https://unix.stackexchange.com/questions/261864/arch-linux-how-to-run-a-cron-job) See the "daily automatic scheduled reboot" example at that link! 
+Here are the .service file contents for setting up on arch linux: 
  ```
  [Unit]
  Description=Post Omer reminder
