@@ -47,7 +47,7 @@ class Bot(discord.Client):
         # get day of the omer
         omer_day = heb_tonight_day-omer_start+1
         
-        if omer_day < 1 or omer_day > 49: 
+        if (heb_tonight_day < omer_start) or omer_day > 49: 
             #it's not the omer! close. 
             try: 
                 await self.close()
@@ -282,8 +282,8 @@ class Bot(discord.Client):
         test function
         """ 
         test_pass = True
-       # print("test holidays")
-       # self.test_holidays() # holidays all good!
+        print("test holidays")
+        self.test_holidays() # holidays all good!
         print("test aspects")
         self.test_aspects()
         print("test numbers")
