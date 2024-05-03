@@ -61,17 +61,17 @@ class Bot(discord.Client):
         # check if there's other stuff happening today 
         eng_extra = self.get_holiday_tonight(heb_tonight_day)
 
-        eng_intro = f"Today is {greg_string}. After sundown, count the Omer!" 
+        eng_intro = f"Today is {greg_string}. Last night was {omer_day-1} days.\nAfter sundown tonight, click below to count the Omer!" 
         
         (heb_aspect_string,tl_aspect_string,eng_aspect_string) = self.construct_aspect_strings(omer_day)
         (heb_number_string,tl_number_string,eng_number_string) = self.construct_number_strings(omer_day)
 
         heb_count_full = f"{heb_number_string} {heb_aspect_string}"
         tl_count_full = f"{tl_number_string} {tl_aspect_string}."    	
-        eng_count_full = f"**{eng_number_string}\n{eng_aspect_string}.**"  
+        eng_count_full = f"**{eng_number_string}**||\n**{eng_aspect_string}.**"  
         if eng_extra: eng_count_full += f"\n{eng_extra}" 
        
-        general_blessing = f"*If you've counted every day so far, do the blessing first. Otherwise, go right to the counting.*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
+        general_blessing = f"||*If you've counted every day so far, do the blessing first. Otherwise, go right to the counting.*\n{self.data['heb_blessing']}\n{self.data['tl_blessing']}\n{self.data['eng_blessing']}"
         
         post = f"{eng_intro}\n\n{general_blessing}\n\n{heb_count_full}\n{tl_count_full}\n{eng_count_full}"
  
